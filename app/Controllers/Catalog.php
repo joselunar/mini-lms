@@ -17,14 +17,14 @@ class Catalog extends BaseController
     {
         return view('catalog/index', [
             'title'   => 'Cursos',
-            'courses' => $this->courses()->catalog(),
+            'courses' => $this->courseService()->catalog(),
         ]);
     }
 
     public function show(int $id)
     {
         try {
-            $course = $this->courses()->courseForStudent($id, service('currentUser')->id());
+            $course = $this->courseService()->courseForStudent($id, service('currentUser')->id());
         } catch (DomainException $exception) {
             return redirect()->to('/')->with('error', $exception->getMessage());
         }
@@ -38,7 +38,7 @@ class Catalog extends BaseController
     public function enroll(int $id)
     {
         try {
-            $this->enrollments()->enroll(service('currentUser')->id(), $id);
+            $this->enrollmentService()->enroll(service('currentUser')->id(), $id);
         } catch (DomainException $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
@@ -49,8 +49,8 @@ class Catalog extends BaseController
     public function lesson(int $courseId, int $lessonId)
     {
         try {
-            $course = $this->courses()->courseForStudent($courseId, service('currentUser')->id());
-            $this->enrollments()->requireEnrollment(service('currentUser')->id(), $courseId);
+            $course = $this->courseService()->courseForStudent($courseId, service('currentUser')->id());
+            $this->enrollmentService()->requireEnrollment(service('currentUser')->id(), $courseId);
         } catch (DomainException $exception) {
             return redirect()->to('cursos/' . $courseId)->with('error', $exception->getMessage());
         }
@@ -77,7 +77,7 @@ class Catalog extends BaseController
     public function complete(int $courseId, int $lessonId)
     {
         try {
-            $this->progress()->completeLesson(service('currentUser')->id(), $lessonId);
+            $this->progressService()->completeLesson(service('currentUser')->id(), $lessonId);
         } catch (DomainException $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
@@ -89,28 +89,28 @@ class Catalog extends BaseController
     {
         return view('catalog/enrollments', [
             'title'       => 'Minhas matrículas',
-            'enrollments' => $this->enrollments()->listForUser(service('currentUser')->id()),
+            'enrollments' => $this->enrollmentService()->listForUser(service('currentUser')->id()),
         ]);
     }
 
-    private function courses(): CourseService
+    private function courseService(): CourseService
     {
         return new CourseService(model(CourseModel::class), model(LessonModel::class), model(LessonProgressModel::class));
     }
 
-    private function enrollments(): EnrollmentService
+    private function enrollmentService(): EnrollmentService
     {
         return new EnrollmentService(model(CourseModel::class), model(LessonModel::class), model(EnrollmentModel::class));
     }
 
-    private function progress(): ProgressService
+    private function progressService(): ProgressService
     {
         return new ProgressService(
             model(CourseModel::class),
             model(LessonModel::class),
             model(EnrollmentModel::class),
             model(LessonProgressModel::class),
-            $this->enrollments(),
+            $this->enrollmentService(),
         );
     }
 }
