@@ -1,0 +1,16 @@
+body { font-family: Georgia, serif; margin: 0; color: #222; background: #f7f7f4; }
+a { color: #0b4f6c; }
+.top { display: flex; justify-content: space-between; gap: 16px; padding: 16px 24px; background: #fff; border-bottom: 1px solid #ddd; }
+.top nav { display: flex; gap: 16px; align-items: center; }
+.logo { font-weight: 700; text-decoration: none; color: inherit; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 24px; }
+.narrow { max-width: 420px; margin-top: 72px; }
+label, form { display: grid; gap: 8px; margin: 12px 0; }
+input, button { font: inherit; padding: 8px 10px; }
+button { cursor: pointer; }
+.list { list-style: none; padding: 0; }
+.list li { padding: 12px 0; border-bottom: 1px solid #ddd; display: grid; gap: 4px; }
+.flash { padding: 8px 10px; }
+.ok { background: #e8f6ea; }
+.err { background: #fdecea; }
+.hint { color: #555; font-size: 14px; }
