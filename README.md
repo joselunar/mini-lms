@@ -46,6 +46,16 @@ curl -X POST http://localhost:8081/api/aulas/4/concluir ^
   -H "Authorization: Bearer SEU_TOKEN"
 ```
 
+## Stack
+
+| Camada | Tecnologia |
+| --- | --- |
+| Backend | PHP 8.2+ + CodeIgniter 4 |
+| Banco | MySQL 8 |
+| API | REST + JSON |
+| Testes | PHPUnit |
+| Infra | Docker + Docker Compose |
+
 ## Como rodar
 
 O MySQL deste projeto usa a porta **3307** para não conflitar com outros containers.
